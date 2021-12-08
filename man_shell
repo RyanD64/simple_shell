@@ -1,1 +1,100 @@
-.TH
+.TH man 3 "6 December 2021" "_shell man page"
+.SH NAME
+shell
+.SH SYNOPSIS
+bash [options] [file]
+.SH DESCRIPTION
+The sh utility is a command language interpreter that shall
+execute commands read from a command line string, the standard
+input, or a specified file. The application shall ensure that the
+commands to be executed are expressed in the language described
+in Chapter 2, Shell Command Language.
+
+Pathname expansion shall not fail due to the size of a file.
+
+Shell input and output redirections have an implementation-
+defined offset maximum that is established in the open file
+description.
+.SH OPERANDS
+The following operands shall be supported:
+
+       -         A single <hyphen-minus> shall be treated as the first
+                        operand and then ignored. If both '-' and "--" are
+			                 given as arguments, or if other operands precede the
+					                  single <hyphen-minus>, the results are undefined.
+
+							         argument  The positional parameters ($1, $2, and so on) shall be
+								                  set to arguments, if any.
+
+										         command_file
+											                  The pathname of a file containing commands. If the
+													                   pathname contains one or more <slash> characters, the
+															                    implementation attempts to read that file; the file
+																	                     need not be executable. If the pathname does not
+																			                      contain a <slash> character:
+
+																					                        *  The implementation shall attempt to read that file
+																								                     from the current working directory; the file need
+																										                          not be executable.
+
+																													                    *  If the file is not in the current working
+																															                         directory, the implementation may perform a search
+																																		                      for an executable file using the value of PATH, as
+																																				                           described in Section 2.9.1.1, Command Search and
+																																							                        Execution.
+
+																																										                 Special parameter 0 (see Section 2.5.2, Special
+																																														                  Parameters) shall be set to the value of command_file.
+																																												                  If sh is called using a synopsis form that omits
+																																														                   command_file, special parameter 0 shall be set to the
+																																																                    value of the first argument passed to sh from its
+																																																		                     parent (for example, argv[0] for a C program), which is
+																																																				                      normally a pathname used to execute the sh utility.
+
+																																																						             command_name
+																																																							                      A string assigned to special parameter 0 when executing
+																																																									                       the commands in command_string.  If command_name is not
+specified, special parameter 0 shall be set to the
+value of the first argument passed to sh from its
+parent (for example, argv[0] for a C program), which is
+normally a pathname used to execute the sh utility.
+command_string
+A string that shall be interpreted by the shell as one
+or more commands, as if the string were the argument to
+the system() function defined in the System Interfaces
+volume of POSIX.1‐2017. If the command_string operand
+is an empty string, sh shall exit with a zero exit
+status
+.SH EXIT STATUS
+The following exit values shall be returned:
+
+           0   The script to be executed consisted solely of zero or
+	                  more blank lines or comments, or both.
+
+			         1‐125   A non-interactive shell detected an error other than
+				                command_file not found or executable, including but not
+						               limited to syntax, redirection, or variable assignment
+							                      errors.
+
+									               126   A specified command_file could not be executed due to an
+										                      [ENOEXEC] error (see Section 2.9.1.1, Command Search and
+														                     Execution, item 2).
+
+												               127   A specified command_file could not be found by a non-
+													                      interactive shell.
+
+															             Otherwise, the shell shall return the exit status of the last
+command it invoked or attempted to invoke.
+.SH SEE ALSO
+ Section 2.9.1.1, Command Search and Execution, Chapter 2, Shell
+        Command Language, cd(1p), echo(1p), exit(1p), fc(1p), pwd(1p),
+	       invalid, set(1p), stty(1p), test(1p), trap(1p), umask(1p), vi(1p)
+
+	       The Base Definitions volume of POSIX.1‐2017, Chapter 8,
+	              Environment Variables, Section 12.2, Utility Syntax Guidelines
+
+		             The System Interfaces volume of POSIX.1‐2017, dup(3p), exec(1p),
+			            exit(3p), fork(3p), open(3p), pipe(3p), signal(3p), system(3p),
+				           ulimit(3p), umask(3p), wait(3p)
+.SH AUTHORS
+Dhondt Ryan
